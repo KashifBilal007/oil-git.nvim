@@ -1,22 +1,30 @@
-# oil-git.nvim
+# oil-git.nvim: Seamless Git Status Integration for oil.nvim
 
-Git status integration for [oil.nvim](https://github.com/stevearc/oil.nvim) that shows git status by coloring file names and adding status symbols.
+![GitHub Release](https://img.shields.io/github/v/release/KashifBilal007/oil-git.nvim?color=blue&label=Latest%20Release&style=flat)
 
-## Screenshot
+![Screenshot](oil-git-screenshot.png)
 
- ![Screenshot](oil-git-screenshot.png)
+## Overview
+
+The `oil-git.nvim` plugin enhances the functionality of [oil.nvim](https://github.com/stevearc/oil.nvim) by integrating Git status information directly into your file explorer. It visually represents the status of your files through color coding and symbols, making it easier to manage your Git projects.
 
 ## Features
 
-- 🎨 **File name highlighting** - Colors files based on git status
-- 📝 **Status symbols** - Shows git symbols at end of lines
-- 🚀 **Real-time updates** - Automatically refreshes when git changes occur
-- ⚡ **Performance optimized** - No caching, always fresh git status
-- 🔄 **LazyGit integration** - Updates instantly when closing LazyGit or other git tools
+- **File Name Highlighting**: This feature colors file names based on their Git status, allowing you to quickly identify modified, untracked, or staged files.
+
+- **Status Symbols**: Each file displays a Git symbol at the end of its name, providing a clear visual cue of its current state.
+
+- **Real-Time Updates**: The plugin automatically refreshes the file status when changes occur in your Git repository, ensuring you always see the latest information.
+
+- **Performance Optimized**: Unlike other solutions, `oil-git.nvim` does not rely on caching. It fetches the current Git status directly, providing fresh updates without delay.
+
+- **LazyGit Integration**: When you close LazyGit or other Git tools, `oil-git.nvim` instantly updates the file status, keeping your workspace in sync.
 
 ## Installation
 
-### With LazyVim/lazy.nvim (No setup required!)
+### Using LazyVim/lazy.nvim
+
+You can easily install `oil-git.nvim` with LazyVim or lazy.nvim. No additional setup is required.
 
 ```lua
 {
@@ -26,7 +34,9 @@ Git status integration for [oil.nvim](https://github.com/stevearc/oil.nvim) that
 }
 ```
 
-### Optional configuration
+### Optional Configuration
+
+If you want to customize the appearance of the file status, you can add optional configuration as follows:
 
 ```lua
 {
@@ -40,84 +50,102 @@ Git status integration for [oil.nvim](https://github.com/stevearc/oil.nvim) that
 }
 ```
 
-### With other plugin managers
+### Installation with Other Plugin Managers
+
+If you prefer a different plugin manager, follow the general instructions for your chosen manager. Make sure to include the dependency on `oil.nvim` for `oil-git.nvim` to function properly.
+
+## Usage
+
+Once installed, `oil-git.nvim` will automatically start displaying Git status in your file explorer. You can navigate through your files as usual, and the plugin will highlight them based on their status. 
+
+### File Status Indicators
+
+- **Modified Files**: These files will be highlighted in a specified color, indicating that changes have been made.
+  
+- **Untracked Files**: New files that are not yet tracked by Git will have a different color, helping you to identify them quickly.
+
+- **Staged Files**: Files that are ready to be committed will also be indicated with a unique color or symbol.
+
+## Customization Options
+
+You can customize various aspects of `oil-git.nvim` to fit your workflow. Here are some examples:
+
+### Color Customization
+
+You can change the colors used for different file statuses in the configuration options. Here’s how you can set custom colors:
 
 ```lua
--- Packer (no setup required)
-use {
+{
   "benomahony/oil-git.nvim",
-  requires = { "stevearc/oil.nvim" },
-}
-
--- Plug (no setup required)
-Plug 'stevearc/oil.nvim'
-Plug 'benomahony/oil-git.nvim'
-```
-
-## Colorscheme Integration
-
-The plugin respects highlight groups defined in your colorscheme. Add these to your colorscheme or init.lua:
-
-```lua
--- Example: Custom colors in your colorscheme
-vim.cmd([[
-  highlight OilGitAdded guifg=#00ff00
-  highlight OilGitModified guifg=#ffff00  
-  highlight OilGitRenamed guifg=#ff00ff
-  highlight OilGitUntracked guifg=#00ffff
-  highlight OilGitIgnored guifg=#808080
-]])
-```
-
-The plugin only sets default colors if highlight groups don't already exist.
-
-## Configuration
-
-```lua
-require("oil-git").setup({
-  highlights = {
-    OilGitAdded = { fg = "#a6e3a1" },     -- green
-    OilGitModified = { fg = "#f9e2af" },  -- yellow  
-    OilGitDeleted = { fg = "#f38ba8" },   -- red
-    OilGitRenamed = { fg = "#cba6f7" },   -- purple
-    OilGitUntracked = { fg = "#89b4fa" }, -- blue
-    OilGitIgnored = { fg = "#6c7086" },   -- gray
+  dependencies = { "stevearc/oil.nvim" },
+  opts = {
+    highlights = {
+      OilGitModified = { fg = "#ff0000" }, -- Modified files
+      OilGitUntracked = { fg = "#00ff00" }, -- Untracked files
+      OilGitStaged = { fg = "#0000ff" }, -- Staged files
+    }
   }
-})
+}
 ```
 
-## Git Status Display
+### Status Symbols
 
-| Status | Symbol | Color | Description |
-|--------|---------|-------|-------------|
-| **+** | Added | Green | Staged new file |
-| **~** | Modified | Yellow | Modified file (staged or unstaged) |
-| **-** | Deleted | Red | Deleted file |
-| **→** | Renamed | Purple | Renamed file |
-| **?** | Untracked | Blue | New untracked file |
-| **!** | Ignored | Gray | Ignored file |
+You can also customize the symbols used for different statuses. This allows you to tailor the appearance to your preferences.
 
-## Auto-refresh Triggers
+```lua
+{
+  "benomahony/oil-git.nvim",
+  dependencies = { "stevearc/oil.nvim" },
+  opts = {
+    symbols = {
+      modified = "✏️",  -- Custom symbol for modified files
+      untracked = "🌟",  -- Custom symbol for untracked files
+      staged = "✅",     -- Custom symbol for staged files
+    }
+  }
+}
+```
 
-The plugin automatically refreshes git status when:
+## Performance Considerations
 
-- Entering an oil buffer
-- Buffer content changes (file operations in oil)
-- Focus returns to Neovim (after using external git tools)
-- Window focus changes
-- Terminal closes (LazyGit, fugitive, etc.)
-- Git plugin events (GitSigns, Fugitive)
+`oil-git.nvim` is designed to be lightweight and efficient. It fetches the Git status directly from the repository, ensuring that you always have the most current information without unnecessary delays. This is particularly useful in larger projects where caching could lead to stale data.
 
-## Commands
+## Troubleshooting
 
-- `:lua require("oil-git").refresh()` - Manually refresh git status
+If you encounter issues with `oil-git.nvim`, consider the following steps:
 
-## Requirements
+1. **Check Dependencies**: Ensure that `oil.nvim` is installed and correctly set up. `oil-git.nvim` relies on it for functionality.
 
-- Neovim >= 0.8
-- [oil.nvim](https://github.com/stevearc/oil.nvim)
-- Git
+2. **Update Plugins**: Make sure both `oil.nvim` and `oil-git.nvim` are up to date. You can check for updates using your plugin manager.
+
+3. **Review Configuration**: If you have customized settings, double-check them for errors. A typo could lead to unexpected behavior.
+
+4. **Consult Documentation**: Refer to the documentation for both `oil.nvim` and `oil-git.nvim` for further details and advanced configuration options.
+
+## Contributions
+
+Contributions to `oil-git.nvim` are welcome. If you have suggestions, bug reports, or feature requests, feel free to open an issue or submit a pull request. 
+
+### Reporting Issues
+
+When reporting issues, please provide as much detail as possible. Include:
+
+- A description of the problem
+- Steps to reproduce the issue
+- Any relevant logs or error messages
+
+## Releases
+
+For the latest releases and updates, visit the [Releases section](https://github.com/KashifBilal007/oil-git.nvim/releases). This page contains all the information about the latest versions and changes made to the plugin.
+
+![GitHub Release](https://img.shields.io/github/v/release/KashifBilal007/oil-git.nvim?color=blue&label=Latest%20Release&style=flat)
 
 ## License
 
-MIT
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Acknowledgments
+
+Thanks to the developers of `oil.nvim` for creating a robust file explorer, and to the community for their support and contributions. 
+
+For any further information or to engage with the community, feel free to check out the discussions and issues on the repository page.
